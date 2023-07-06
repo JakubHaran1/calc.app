@@ -34,18 +34,23 @@ const actionFunction = () => {
     numbersArray.push(view_value);
     view_value = "";
 }
+
 const resultFunction = () => {
     view.textContent = result;
     resultArr.push(result);
+    console.log(numbersArray);
 }
 
+// BTN ACTIONS
 calcBtns.forEach(btn => {
     btn.addEventListener("click", function () {
+        if (numbersArray.length == 0 && action_type === "-") {
+            view_value = "-"
+
+        }
         view_value += btn.innerHTML.trim();
         view.textContent = view_value;
         view_wrapper.scrollLeft = view_wrapper.offsetWidth;
-
-
     })
 })
 
@@ -54,7 +59,20 @@ calcBtns.forEach(btn => {
 calcPlus.addEventListener("click", function () {
     actionFunction();
     action_type = "+";
+})
 
+// SUBSTRACTION
+calcMinus.addEventListener("click", function () {
+    action_type = "-";
+    if (view_value != "") {
+        actionFunction()
+    }
+})
+
+// MULTIPLICATION
+calcMultiplication.addEventListener("click", function () {
+    actionFunction();
+    action_type = "*";
 })
 
 // EQUAL
@@ -65,6 +83,18 @@ calcEqual.addEventListener("click", function () {
     if (action_type === "+") {
         if (action == 0 && numbersArray.length == 2) {
             result = numbersArray[0] + numbersArray[1];
+            resultFunction()
+            action = 1;
+        }
+    } else if (action_type === "-") {
+        if (action == 0 && numbersArray.length == 2) {
+            result = numbersArray[0] - numbersArray[1];
+            resultFunction()
+            action = 1;
+        }
+    } else if (action_type === "*") {
+        if (action == 0 && numbersArray.length == 2) {
+            result = numbersArray[0] * numbersArray[1];
             resultFunction()
             action = 1;
         }
