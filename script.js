@@ -38,42 +38,49 @@ const actionFunction = () => {
 const resultFunction = () => {
     view.textContent = result;
     resultArr.push(result);
-    console.log(numbersArray);
+
 }
 
 // BTN ACTIONS
 calcBtns.forEach(btn => {
     btn.addEventListener("click", function () {
         if (numbersArray.length == 0 && action_type === "-") {
-            view_value = "-"
+            view_value = "-";
 
         }
         view_value += btn.innerHTML.trim();
         view.textContent = view_value;
         view_wrapper.scrollLeft = view_wrapper.offsetWidth;
-    })
-})
+    });
+});
 
 
 // ADD
 calcPlus.addEventListener("click", function () {
     actionFunction();
     action_type = "+";
-})
+});
 
 // SUBSTRACTION
 calcMinus.addEventListener("click", function () {
     action_type = "-";
     if (view_value != "") {
-        actionFunction()
-    }
-})
+        actionFunction();
+    };
+});
 
 // MULTIPLICATION
 calcMultiplication.addEventListener("click", function () {
     actionFunction();
     action_type = "*";
-})
+});
+
+// DIVISION
+calcDivision.addEventListener("click", function () {
+
+    actionFunction();
+    action_type = "/";
+});
 
 // EQUAL
 calcEqual.addEventListener("click", function () {
@@ -81,25 +88,48 @@ calcEqual.addEventListener("click", function () {
     numbersArray.push(view_value);
 
     if (action_type === "+") {
-        if (action == 0 && numbersArray.length == 2) {
-            result = numbersArray[0] + numbersArray[1];
-            resultFunction()
-            action = 1;
+        if (action == 0) {
+            if (numbersArray.length == 2) {
+                result = numbersArray[0] + numbersArray[1];
+                resultFunction();
+                action = 1;
+            };
+        } else if (action == 1) {
+            if (numbersArray.length >= 3) {
+                result = numbersArray[numbersArray.length - 1] + resultArr[resultArr.length];
+                resultFunction();
+            };
         }
     } else if (action_type === "-") {
-        if (action == 0 && numbersArray.length == 2) {
-            result = numbersArray[0] - numbersArray[1];
-            resultFunction()
-            action = 1;
-        }
+        if (action == 0) {
+            if (numbersArray.length == 2) {
+                result = numbersArray[0] - numbersArray[1];
+                resultFunction();
+                action = 1;
+            };
+        };
     } else if (action_type === "*") {
-        if (action == 0 && numbersArray.length == 2) {
-            result = numbersArray[0] * numbersArray[1];
-            resultFunction()
-            action = 1;
-        }
-    }
-})
+        if (action == 0) {
+            if (numbersArray.length == 2) {
+                result = numbersArray[0] * numbersArray[1];
+                resultFunction();
+                action = 1;
+            };
+        };
+    } else if (action_type === "/") {
+        if (action == 0) {
+            if (numbersArray[0] == 0 || numbersArray[1] == 0) {
+                view.textContent = "Nie dziel przez 0!";
+                //remove once function
+
+            } else if (numbersArray.length == 2) {
+                result = numbersArray[0] / numbersArray[1];
+                resultFunction();
+                action = 1;
+            };
+        };
+    };
+});
 
 
 
