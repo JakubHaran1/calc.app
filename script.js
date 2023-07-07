@@ -77,7 +77,6 @@ calcMultiplication.addEventListener("click", function () {
 
 // DIVISION
 calcDivision.addEventListener("click", function () {
-
     actionFunction();
     action_type = "/";
 });
@@ -96,7 +95,7 @@ calcEqual.addEventListener("click", function () {
             };
         } else if (action == 1) {
             if (numbersArray.length >= 3) {
-                result = numbersArray[numbersArray.length - 1] + resultArr[resultArr.length];
+                result = numbersArray[numbersArray.length - 1] + resultArr[resultArr.length - 1];
                 resultFunction();
             };
         }
@@ -107,7 +106,13 @@ calcEqual.addEventListener("click", function () {
                 resultFunction();
                 action = 1;
             };
-        };
+        } else if (action == 1) {
+            if (numbersArray.length >= 3) {
+                result = resultArr[resultArr.length - 1] - numbersArray[numbersArray.length - 1];
+                resultFunction();
+            };
+        }
+
     } else if (action_type === "*") {
         if (action == 0) {
             if (numbersArray.length == 2) {
@@ -115,7 +120,12 @@ calcEqual.addEventListener("click", function () {
                 resultFunction();
                 action = 1;
             };
-        };
+        } else if (action == 1) {
+            if (numbersArray.length >= 3) {
+                result = resultArr[resultArr.length - 1] * numbersArray[numbersArray.length - 1];
+                resultFunction();
+            }
+        }
     } else if (action_type === "/") {
         if (action == 0) {
             if (numbersArray[0] == 0 || numbersArray[1] == 0) {
@@ -127,7 +137,17 @@ calcEqual.addEventListener("click", function () {
                 resultFunction();
                 action = 1;
             };
-        };
+        } else if (action == 1) {
+            if (resultArr[resultArr.length - 1] == 0 || numbersArray[numbersArray.length - 1] == 0) {
+                view.textContent = "Nie dziel przez 0!";
+                //remove once function
+
+            } else if (numbersArray.length >= 3) {
+                result = resultArr[resultArr.length - 1] / numbersArray[numbersArray.length - 1];
+                resultFunction();
+
+            };
+        }
     };
 });
 
