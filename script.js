@@ -24,6 +24,7 @@ let view_value = "";
 let numbersArray = [];
 let action = 0;
 let action_type;
+let actionArr = [];
 let resultArr = [];
 let result = 0;
 
@@ -33,6 +34,8 @@ const actionFunction = () => {
     view_value = Number(view_value);
     numbersArray.push(view_value);
     view_value = "";
+    actionArr.push(action_type);
+    console.log(actionArr)
 }
 
 const resultFunction = () => {
@@ -41,48 +44,7 @@ const resultFunction = () => {
 
 }
 
-// BTN ACTIONS
-calcBtns.forEach(btn => {
-    btn.addEventListener("click", function () {
-        if (numbersArray.length == 0 && action_type === "-") {
-            view_value = "-";
-
-        }
-        view_value += btn.innerHTML.trim();
-        view.textContent = view_value;
-        view_wrapper.scrollLeft = view_wrapper.offsetWidth;
-    });
-});
-
-
-// ADD
-calcPlus.addEventListener("click", function () {
-    actionFunction();
-    action_type = "+";
-});
-
-// SUBSTRACTION
-calcMinus.addEventListener("click", function () {
-    action_type = "-";
-    if (view_value != "") {
-        actionFunction();
-    };
-});
-
-// MULTIPLICATION
-calcMultiplication.addEventListener("click", function () {
-    actionFunction();
-    action_type = "*";
-});
-
-// DIVISION
-calcDivision.addEventListener("click", function () {
-    actionFunction();
-    action_type = "/";
-});
-
-// EQUAL
-calcEqual.addEventListener("click", function () {
+const EqualFunctions = () => {
     view_value = Number(view_value);
     numbersArray.push(view_value);
 
@@ -90,6 +52,7 @@ calcEqual.addEventListener("click", function () {
         if (action == 0) {
             if (numbersArray.length == 2) {
                 result = numbersArray[0] + numbersArray[1];
+                console.log(result)
                 resultFunction();
                 action = 1;
             };
@@ -97,6 +60,7 @@ calcEqual.addEventListener("click", function () {
             if (numbersArray.length >= 3) {
                 result = numbersArray[numbersArray.length - 1] + resultArr[resultArr.length - 1];
                 resultFunction();
+
             };
         }
     } else if (action_type === "-") {
@@ -105,6 +69,7 @@ calcEqual.addEventListener("click", function () {
                 result = numbersArray[0] - numbersArray[1];
                 resultFunction();
                 action = 1;
+
             };
         } else if (action == 1) {
             if (numbersArray.length >= 3) {
@@ -149,6 +114,58 @@ calcEqual.addEventListener("click", function () {
             };
         }
     };
+}
+// BTN ACTIONS
+calcBtns.forEach(btn => {
+    btn.addEventListener("click", function () {
+        if (numbersArray.length == 0 && action_type === "-") {
+            view_value = "-";
+
+        }
+        view_value += btn.innerHTML.trim();
+        view.textContent = view_value;
+        view_wrapper.scrollLeft = view_wrapper.offsetWidth;
+    });
+});
+
+
+// ADD
+calcPlus.addEventListener("click", function () {
+    action_type = "+";
+    if (actionArr.length >= 1) {
+        console.log(numbersArray);
+        EqualFunctions()
+        console.log(resultArr)
+    }
+    actionFunction();
+});
+
+// SUBSTRACTION
+calcMinus.addEventListener("click", function () {
+    action_type = "-";
+    if (view_value != "") {
+        actionFunction();
+    };
+});
+
+// MULTIPLICATION
+calcMultiplication.addEventListener("click", function () {
+    action_type = "*";
+    actionFunction();
+
+});
+
+// DIVISION
+calcDivision.addEventListener("click", function () {
+
+    actionFunction();
+});
+
+// EQUAL
+calcEqual.addEventListener("click", function () {
+    actionArr = []
+    EqualFunctions()
+
 });
 
 
