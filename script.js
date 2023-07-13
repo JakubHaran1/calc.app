@@ -5,7 +5,6 @@ import {
 } from "./scripts/theme-switch.js";
 
 // DOM ELEMENTS
-const mainHeader = document.querySelector(".main-header")
 const view_wrapper = document.querySelector(".view")
 const view = document.querySelector(".view-value");
 
@@ -21,21 +20,24 @@ const calcDivision = document.querySelector(".calc.division");
 const calcMultiplication = document.querySelector(".calc.multiplication");
 
 // LOGICAL VALUE
-let view_value = "";
+let viewWalue = "";
 let numbersArray = [];
 let action = 0;
-let action_type;
+let actionType;
 let actionArr = [];
 let resultArr = [];
 let result = 0;
-let check_value;
+let check_value = 0;
+
+
 
 // FUNCTIONS
 const actionFunction = () => {
-    view_value = Number(view_value);
-    numbersArray.push(view_value);
-    view_value = "";
-    actionArr.push(action_type);
+    viewWalue = Number(viewWalue);
+    numbersArray.push(viewWalue);
+    viewWalue = "";
+    actionArr.push(actionType);
+    check_value = 1;
 
 }
 
@@ -46,10 +48,12 @@ const resultFunction = () => {
 }
 
 const EqualFunctions = (actions) => {
-    view_value = Number(view_value);
-    numbersArray.push(view_value);
-    actions.forEach(action_type => {
-        if (action_type === "+") {
+    viewWalue = Number(viewWalue);
+    numbersArray.push(viewWalue);
+    check_value = 0;
+    actions.forEach(actionType => {
+
+        if (actionType === "+") {
             if (action == 0) {
                 if (numbersArray.length == 2) {
                     result = numbersArray[0] + numbersArray[1];
@@ -64,7 +68,7 @@ const EqualFunctions = (actions) => {
 
                 };
             }
-        } else if (action_type === "-") {
+        } else if (actionType === "-") {
             if (action == 0) {
                 if (numbersArray.length == 2) {
                     result = numbersArray[0] - numbersArray[1];
@@ -79,7 +83,7 @@ const EqualFunctions = (actions) => {
                 };
             }
 
-        } else if (action_type === "*") {
+        } else if (actionType === "*") {
             if (action == 0) {
                 if (numbersArray.length == 2) {
                     result = numbersArray[0] * numbersArray[1];
@@ -92,11 +96,11 @@ const EqualFunctions = (actions) => {
                     resultFunction();
                 }
             }
-        } else if (action_type === "/") {
+        } else if (actionType === "/") {
             if (action == 0) {
                 if (numbersArray[0] == 0 || numbersArray[1] == 0) {
                     view.textContent = "Nie dziel przez 0!";
-                    //remove once function
+                    resetFunction()
 
                 } else if (numbersArray.length == 2) {
                     result = numbersArray[0] / numbersArray[1];
@@ -118,47 +122,57 @@ const EqualFunctions = (actions) => {
 
     })
 }
-const delFunction = () => {
-    let view_valueCopy = view_value.slice(0, -1);
-    let lastResult = String(resultArr[resultArr.length - 1]).slice(0, -1)
 
+const delFunction = () => {
+    let lastResult = new String(resultArr[resultArr.length - 1]).slice(0, -1)
     if (action == 0) {
-        view_value = view_valueCopy
-        view.textContent = view_value;
+        let viewValueCopy = viewWalue.slice(0, -1);
+        viewWalue = viewValueCopy
+        view.textContent = viewWalue;
     } else {
+
         if (check_value == 0) {
+            console.log(check_value)
             result = Number(lastResult);
             view.textContent = result;
             resultArr.push(result);
             console.log(resultArr);
         } else {
-            view_value = view_valueCopy
-            view.textContent = view_value;
+            let viewValueCopy = viewWalue.slice(0, -1);
+            viewWalue = viewValueCopy
+            view.textContent = viewWalue;
         }
+    }
+    if (viewWalue == "") {
+        view.textContent = 0
     }
 }
 
 const resetFunction = () => {
-    view_value = "";
+    viewWalue = "";
     view.textContent = 0;
     numbersArray = [];
     action = 0;
-    action_type;
+    actionType;
     actionArr = [];
     resultArr = [];
     result = 0;
 }
+
+
+
+
 // BTN ACTIONS
 
 // CALC BTN
 calcBtns.forEach(btn => {
     btn.addEventListener("click", function () {
-        if (numbersArray.length == 0 && action_type === "-") {
-            view_value = "-";
+        if (numbersArray.length == 0 && actionType === "-") {
+            viewWalue = "-";
 
         }
-        view_value += btn.innerHTML.trim();
-        view.textContent = view_value;
+        viewWalue += btn.innerHTML.trim();
+        view.textContent = viewWalue;
         view_wrapper.scrollLeft = view_wrapper.offsetWidth;
     });
 });
@@ -166,7 +180,7 @@ calcBtns.forEach(btn => {
 
 // ADD
 calcPlus.addEventListener("click", function () {
-    action_type = "+";
+    actionType = "+";
     if (actionArr.length >= 1) {
         EqualFunctions(actionArr)
     }
@@ -177,18 +191,18 @@ calcPlus.addEventListener("click", function () {
 
 // SUBSTRACTION
 calcMinus.addEventListener("click", function () {
-    action_type = "-";
+    actionType = "-";
     if (actionArr.length >= 1) {
         EqualFunctions(actionArr)
     }
-    if (view_value != "") {
+    if (viewWalue != "") {
         actionFunction();
     };
 });
 
 // MULTIPLICATION
 calcMultiplication.addEventListener("click", function () {
-    action_type = "*";
+    actionType = "*";
     if (actionArr.length >= 1) {
         EqualFunctions(actionArr)
     }
@@ -197,7 +211,7 @@ calcMultiplication.addEventListener("click", function () {
 
 // DIVISION
 calcDivision.addEventListener("click", function () {
-    action_type = "/";
+    actionType = "/";
     if (actionArr.length >= 1) {
         EqualFunctions(actionArr)
     }
@@ -211,38 +225,14 @@ calcEqual.addEventListener("click", function () {
 });
 
 
-calcReset.addEventListener("click", function () {
-    resetFunction()
+calcReset.addEventListener("click", resetFunction)
 
-})
-calcDel.addEventListener("click", function () {
-    delFunction()
+calcDel.addEventListener("click", delFunction)
 
-})
-
-
-
-// gdy action 0 to bez znaczenia 
-// tworze zmienna check_value - 0 jak liczba , po naciśnieciu przycisku akcji na 1 i jest result - to gdy action1
-// viev_value rozsmarowuje i usuwam ostatnia wartośc 
-// liczba powinna się dodac do tablicy sama - w innych przyciskach 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// main function
+// MAIN FUNCTION
 const main = () => {
     themeBtnFunction();
+
 };
 
 main()
